@@ -1773,31 +1773,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       email: "",
       password: "",
-      remember: true
+      remember: true,
+      loading: false,
+      errors: []
     };
   },
   methods: {
@@ -1809,20 +1793,31 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     },
     attemptLogin: function attemptLogin() {
+      var _this = this;
+
+      this.errors = [];
+      this.loading = true;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("/login", {
         email: this.email,
         password: this.password,
-        remember: this.remember
-      }).then(function (res) {
-        console.log(res);
-      })["catch"](function (err) {
-        console.log(err);
+        remember: this.remember,
+        loading: false
+      }).then(function (resp) {
+        location.reload();
+      })["catch"](function (error) {
+        _this.loading = false;
+
+        if (error.response.status == 422) {
+          _this.errors.push("We can't verify your account details");
+        } else {
+          _this.errors.push("Something went wrong, please refresh and try again.");
+        }
       });
     }
   },
   computed: {
     isValidLoginForm: function isValidLoginForm() {
-      return this.emailIsValid() && this.password;
+      return this.emailIsValid() && this.password && !this.loading;
     }
   }
 });
@@ -37469,9 +37464,28 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("br"),
+            _vm._v(" "),
             _c("br"),
             _vm._v(" "),
             _c("form", [
+              _vm.errors.length > 0
+                ? _c(
+                    "ul",
+                    { staticClass: "list-group alert alert-danger" },
+                    _vm._l(_vm.errors, function(error) {
+                      return _c(
+                        "li",
+                        {
+                          key: error.indexOf(error),
+                          staticClass: "list-group-item"
+                        },
+                        [_vm._v(_vm._s(error))]
+                      )
+                    }),
+                    0
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "form-group" }, [
                 _c("input", {
                   directives: [
@@ -37586,11 +37600,7 @@ var render = function() {
                     attrs: { type: "submit", disabled: !_vm.isValidLoginForm },
                     on: { click: _vm.attemptLogin }
                   },
-                  [
-                    _vm._v(
-                      "\n                        Login\n                    "
-                    )
-                  ]
+                  [_vm._v("Login")]
                 )
               ])
             ]),
@@ -37645,7 +37655,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("p", { staticClass: "text-center text-muted fs-13 mt-20" }, [
-      _vm._v("\n                Don't have an account?\n                "),
+      _vm._v("\n        Don't have an account?\n        "),
       _c("a", { attrs: { href: "page-register.html" } }, [_vm._v("Sign up")])
     ])
   }
