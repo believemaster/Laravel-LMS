@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'username', 'confirm_token'
     ];
 
     /**
@@ -36,4 +36,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isConfirmed()
+    {
+        return $this->confirm_token == null;
+    }
+
+    public function confirm()
+    {
+        $this->confirm_token == null;
+        $this->save();
+    }
 }
