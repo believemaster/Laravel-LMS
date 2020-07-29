@@ -2,7 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Series;
+use Illuminate\Support\Str;
+
+
 use Illuminate\Foundation\Http\FormRequest;
+use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class CreateSeriesRequest extends FormRequest
 {
@@ -24,7 +29,30 @@ class CreateSeriesRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required',
+            'description' => 'required',
+            'image' => 'required|image'
         ];
+    }
+
+    public function uploadSeriesImage()
+    {
+        $uploadImage = $this->image;
+
+        $this->fileName = Str::slug($this->title) . '.' . $uploadImage->getClientOriginalExtension();
+
+        $uploadImage->storeAs('series', $this->fileName);
+
+        return $this;
+    }
+
+    public function storeSeries()
+    {
+        Series::create([
+            'title' => $this->title,
+            'slug' => Str::slug($this->title),
+            'description' => $this->description,
+            'image_url' => 'series/' . $this->fileName
+        ]);
     }
 }
