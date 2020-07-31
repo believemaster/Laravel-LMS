@@ -50,7 +50,7 @@ class SeriesController extends Controller
      */
     public function show(Series $series)
     {
-        dd(Series::find($series));
+        return view('admin.series.index')->withSeries($series);
     }
 
     /**
