@@ -1698,6 +1698,8 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _children_CreateLesson__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./children/CreateLesson */ "./resources/js/components/children/CreateLesson.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -1710,6 +1712,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["default_lessons", "series_id"],
@@ -1732,6 +1742,15 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     createNewLesson: function createNewLesson() {
       this.$emit("create_new_lesson", this.series_id);
+    },
+    deleteLesson: function deleteLesson(id) {
+      if (confirm("Are You Sure?")) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a["delete"]("/admin/".concat(this.series_id, "/lessons/").concat(id)).then(function (resp) {
+          console.log(resp);
+        })["catch"](function (resp) {
+          console.log(resp);
+        });
+      }
     }
   }
 });
@@ -37607,9 +37626,32 @@ var render = function() {
         "ul",
         { staticClass: "list-group" },
         _vm._l(_vm.lessons, function(lesson) {
-          return _c("li", { staticClass: "list-group-item" }, [
-            _vm._v(_vm._s(lesson.title))
-          ])
+          return _c(
+            "li",
+            { staticClass: "list-group-item d-flex justify-content-between" },
+            [
+              _c("p", [_vm._v(_vm._s(lesson.title))]),
+              _vm._v(" "),
+              _c("p", [
+                _c("button", { staticClass: "btn btn-primary btn-xs" }, [
+                  _vm._v("Edit")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-danger btn-xs",
+                    on: {
+                      click: function($event) {
+                        return _vm.deleteLesson(lesson.id)
+                      }
+                    }
+                  },
+                  [_vm._v("Delete")]
+                )
+              ])
+            ]
+          )
         }),
         0
       ),
