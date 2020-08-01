@@ -21,8 +21,13 @@ Route::get('/logout', function () {
     auth()->logout();
 });
 
+Route::get('{series_by_id}', function (\App\Series $series) {
+    dd($series);
+});
+
 Route::middleware('admin')->prefix('admin')->group(function () {
     Route::resource('series', 'SeriesController');
+    Route::resource('{series_by_id}/lessons', 'LessonsController');
 });
 
 Auth::routes();
