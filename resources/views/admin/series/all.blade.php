@@ -39,7 +39,7 @@
                         <tr>
                             <td>{{ $s->title }}</td>
                             <td>
-                                <a href="" class="btn btn-primary">Edit</a>
+                                <a href="{{ route('series.edit', $s->slug) }}" class="btn btn-primary">Edit</a>
                             </td>
                             <td>
                                 <a href="" class="btn btn-danger">Delete</a>
