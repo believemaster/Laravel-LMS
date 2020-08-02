@@ -57,6 +57,8 @@
             @yield('content')
         </main>
 
+        <vue-noty></vue-noty>
+
         @if (!auth()->check())
         <vue-login></vue-login>
         @endif
