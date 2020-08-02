@@ -1743,10 +1743,13 @@ __webpack_require__.r(__webpack_exports__);
     createNewLesson: function createNewLesson() {
       this.$emit("create_new_lesson", this.series_id);
     },
-    deleteLesson: function deleteLesson(id) {
+    deleteLesson: function deleteLesson(id, key) {
+      var _this2 = this;
+
       if (confirm("Are You Sure?")) {
         axios__WEBPACK_IMPORTED_MODULE_1___default.a["delete"]("/admin/".concat(this.series_id, "/lessons/").concat(id)).then(function (resp) {
-          console.log(resp);
+          // console.log(resp);
+          _this2.lessons.splice(key, 1);
         })["catch"](function (resp) {
           console.log(resp);
         });
@@ -37625,7 +37628,7 @@ var render = function() {
       _c(
         "ul",
         { staticClass: "list-group" },
-        _vm._l(_vm.lessons, function(lesson) {
+        _vm._l(_vm.lessons, function(lesson, key) {
           return _c(
             "li",
             { staticClass: "list-group-item d-flex justify-content-between" },
@@ -37643,7 +37646,7 @@ var render = function() {
                     staticClass: "btn btn-danger btn-xs",
                     on: {
                       click: function($event) {
-                        return _vm.deleteLesson(lesson.id)
+                        return _vm.deleteLesson(lesson.id, key)
                       }
                     }
                   },

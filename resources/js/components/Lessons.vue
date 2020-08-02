@@ -4,12 +4,12 @@
       <button class="btn btn-primary" @click="createNewLesson">Create New Lesson</button>
     </h1>
     <ul class="list-group">
-      <li class="list-group-item d-flex justify-content-between" v-for="lesson in lessons">
+      <li class="list-group-item d-flex justify-content-between" v-for="lesson, key in lessons">
         <p>{{ lesson.title }}</p>
         <p>
           <button class="btn btn-primary btn-xs">Edit</button>
 
-          <button class="btn btn-danger btn-xs" @click="deleteLesson(lesson.id)">Delete</button>
+          <button class="btn btn-danger btn-xs" @click="deleteLesson(lesson.id, key)">Delete</button>
         </p>
       </li>
     </ul>
@@ -47,11 +47,12 @@ export default {
       this.$emit("create_new_lesson", this.series_id);
     },
 
-    deleteLesson(id) {
+    deleteLesson(id, key) {
       if (confirm("Are You Sure?")) {
         Axios.delete(`/admin/${this.series_id}/lessons/${id}`)
           .then((resp) => {
-            console.log(resp);
+            // console.log(resp);
+            this.lessons.splice(key, 1);
           })
           .catch((resp) => {
             console.log(resp);
