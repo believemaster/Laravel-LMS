@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateSeriesRequest;
 use App\Http\Requests\UpdateSeriesRequest;
 use App\Series;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class SeriesController extends Controller
@@ -74,16 +73,9 @@ class SeriesController extends Controller
      */
     public function update(UpdateSeriesRequest $request, Series $series)
     {
-        if ($request->hasFile('image')) {
-            $series->image_url = $request->uploadSeriesImage()->fileName;
-        }
+        $request->updateSeries($series);
 
-        $series->title = $request->title;
-        $series->description = $request->description;
-        $series->slug = Str::slug($request->title);
-
-        $series->save();
-
+        session()->flash('success', 'Series Updated Successfully');
         return redirect(route('series.index'));
     }
 

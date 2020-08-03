@@ -21,6 +21,7 @@ class CreateSeriesTest extends TestCase
 
     public function test_a_user_can_create_a_series()
     {
+        $this->withoutExceptionHandling();
         $this->loginAdmin();
 
         Storage::fake(config('filesystems.default'));
@@ -74,9 +75,9 @@ class CreateSeriesTest extends TestCase
 
     public function test_a_series_must_be_created_with_an_image_which()
     {
+        $this->withoutExceptionHandling();
         $this->loginAdmin();
 
-        $this->withoutExceptionHandling();
         $this->post('/admin/series', [
             'title' => 'the best magic site ever',
             'description' => 'the best magic site ever description',

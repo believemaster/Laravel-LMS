@@ -5,11 +5,9 @@ namespace App\Http\Requests;
 use App\Series;
 use Illuminate\Support\Str;
 
-
-use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\CssSelector\Node\FunctionNode;
 
-class CreateSeriesRequest extends FormRequest
+class CreateSeriesRequest extends SeriesRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,17 +31,6 @@ class CreateSeriesRequest extends FormRequest
             'description' => 'required',
             'image' => 'required|image'
         ];
-    }
-
-    public function uploadSeriesImage()
-    {
-        $uploadImage = $this->image;
-
-        $this->fileName = Str::slug($this->title) . '.' . $uploadImage->getClientOriginalExtension();
-
-        $uploadImage->storeAs('series', $this->fileName);
-
-        return $this;
     }
 
     public function storeSeries()
