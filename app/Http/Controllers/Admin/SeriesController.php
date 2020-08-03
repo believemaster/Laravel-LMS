@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\CreateLessonRequest;
-use App\Http\Requests\UpdateLessonRequest;
-use App\Lesson;
+use App\Http\Requests\CreateSeriesRequest;
+use App\Http\Requests\UpdateSeriesRequest;
+use App\Http\Controllers\Controller;
 use App\Series;
 use Illuminate\Http\Request;
 
-class LessonsController extends Controller
+class SeriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class LessonsController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.series.all')->withSeries(Series::all());
     }
 
     /**
@@ -27,7 +27,7 @@ class LessonsController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.series.create');
     }
 
     /**
@@ -36,9 +36,11 @@ class LessonsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Series $series, CreateLessonRequest $request)
+    public function store(CreateSeriesRequest $request)
     {
-        return $series->lessons()->create($request->all());
+
+        return $request->uploadSeriesImage()
+            ->storeSeries();
     }
 
     /**
@@ -47,9 +49,9 @@ class LessonsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Series $series)
     {
-        //
+        return view('admin.series.index')->withSeries($series);
     }
 
     /**
@@ -58,9 +60,9 @@ class LessonsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Series $series)
     {
-        //
+        return view('admin.series.edit')->withSeries($series);
     }
 
     /**
@@ -70,11 +72,12 @@ class LessonsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Series $series, Lesson $lesson, UpdateLessonRequest $request)
+    public function update(UpdateSeriesRequest $request, Series $series)
     {
-        $lesson->update($request->all());
+        $request->updateSeries($series);
 
-        return $lesson->fresh();
+        session()->flash('success', 'Series Updated Successfully');
+        return redirect(route('series.index'));
     }
 
     /**
@@ -83,10 +86,8 @@ class LessonsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Series $series, Lesson $lesson)
+    public function destroy($id)
     {
-        $lesson->delete();
-
-        return response()->json(['status', 'ok'], 200);
+        //
     }
 }
