@@ -51,7 +51,7 @@ class UpdateSeriesTest extends TestCase
         ])->assertRedirect(route('series.index'))
             ->assertSessionHas('success', 'Series Updated Successfully');
 
-        Storage::disk(config('filesystems.default'))->assertMissing('series/' . Str::slug('the updated title') . '.png');
+        Storage::disk(config('filesystems.default'))->assertMissing('public/series/' . Str::slug('the updated title') . '.png');
 
         $this->assertDatabaseHas('series', [
             'slug' => Str::slug('the updated title'),

@@ -13,7 +13,7 @@ class SeriesRequest extends FormRequest
 
         $this->fileName = Str::slug($this->title) . '.' . $uploadImage->getClientOriginalExtension();
 
-        $uploadImage->storeAs('series', $this->fileName);
+        $uploadImage->storeAs('public/series', $this->fileName);
 
         return $this;
     }

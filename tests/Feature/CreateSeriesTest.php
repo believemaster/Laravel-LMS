@@ -33,7 +33,7 @@ class CreateSeriesTest extends TestCase
         ])->assertRedirect()
             ->asssertSessionHas('success', 'Series Created Successfull');
 
-        Storage::disk(config('filesystems.default'))->assertExists('series/' . Str::slug('Vue is not best for frontened') . '.png');
+        Storage::disk(config('filesystems.default'))->assertExists('public/series/' . Str::slug('Vue is not best for frontened') . '.png');
 
         $this->assertDatabaseHas('series', [
             'slug' => Str::slug('Vue is not best for frontened')
