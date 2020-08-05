@@ -30,7 +30,7 @@
 
             <div class="topbar-left">
                 <button class="topbar-toggler">&#9776;</button>
-                <a class="topbar-brand" href="#">
+                <a class="topbar-brand" href="{{ url('/') }}">
                 <img class="logo-default" src="{{ asset('assets/img/logo.png') }}" alt="logo">
                 <img class="logo-inverse" src="{{ asset('assets/img/logo-light.png') }}" alt="logo">
                 </a>
@@ -39,7 +39,7 @@
 
             <div class="topbar-right">
                 <ul class="topbar-nav nav">
-                <li class="nav-item"><a class="nav-link" href="">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li>
                 @if (auth()->check())
                 <li class="nav-item"><a class="nav-link" href="{{ route('series.index') }}">All Series</a></li>
 

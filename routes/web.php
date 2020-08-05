@@ -11,6 +11,16 @@
 |
 */
 
+use Illuminate\Support\Facades\Redis;
+
+Route::get('/redis', function () {
+    // Redis::sadd('frontend-frameworks', ['angular', 'vuejs', 'react']);
+
+    dd(Redis::smembers('frontend-frameworks'));
+});
+
+Auth::routes();
+
 Route::get('/', 'FrontendController@welcome');
 
 Route::get('register/confirm', 'ConfirmEmailController@index')->name('confirm-email');
@@ -19,10 +29,6 @@ Route::get('/logout', function () {
     auth()->logout();
 });
 
-Route::get('{series_by_id}', function (\App\Series $series) {
-    dd($series);
-});
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('{series_by_id}', function (\App\Series $series) {
+//     dd($series);
+// });
