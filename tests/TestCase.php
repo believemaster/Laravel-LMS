@@ -5,6 +5,7 @@ namespace Tests;
 use App\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Redis;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -18,5 +19,10 @@ abstract class TestCase extends BaseTestCase
 
         Config::push('appConfig.administrators', $user->email);
         $this->actingAs($user);
+    }
+
+    public function flushRedis()
+    {
+        Redis::flushall();
     }
 }
