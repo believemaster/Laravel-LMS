@@ -18,15 +18,17 @@
               </p>
               <br><br><br>
 
-              @if (auth()->user())
-                @if (auth()->user()->hasStartedSeries($series))
-                    <a href="" class="btn btn-lg btn-primary mr-16 btn-round">CONTINUE LEARNING</a>
+            @auth
+
+                @hasStartedSeries($series)
+                    <a href="{{ route('series.learning', $series->slug) }}" class="btn btn-lg btn-primary mr-16 btn-round">CONTINUE LEARNING</a>
                 @else
                     <a href="" class="btn btn-lg btn-primary mr-16 btn-round">START LEARNING</a>
-                @endif
-              @else
+                @endhasStartedSeries
+            @else
                 <a href="" class="btn btn-lg btn-primary mr-16 btn-round">START LEARNING</a>
-              @endif
+            @endauth
+
 
             </div>
 

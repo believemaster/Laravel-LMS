@@ -22,17 +22,17 @@ trait Learning
 
     public function getNumberOfCompletedLessonsForASeries($series)
     {
-        return count($this->getCompletedLessonsForASeries($series));
+        return count([$this->getCompletedLessonsForASeries($series)]);
     }
 
     public function getCompletedLessonsForASeries($series)
     {
-        Redis::smemebers("user:{$this->id}:series:{$series->id}");
+        Redis::smembers("user:{$this->id}:series:{$series->id}");
     }
 
-    public function hasStarted($series)
+    public function hasStartedSeries($series)
     {
-        return $this->getNumberOfCompletedLessonForASeries($series) > 0;
+        return $this->getNumberOfCompletedLessonsForASeries($series) > 0;
     }
 
     public function getCompletedSeries($series)
