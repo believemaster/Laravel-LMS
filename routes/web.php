@@ -23,6 +23,8 @@ Auth::routes();
 
 Route::get('/', 'FrontendController@welcome');
 
+Route::get('/series/{series}', 'FrontendController@series')->name('series');
+
 Route::get('register/confirm', 'ConfirmEmailController@index')->name('confirm-email');
 
 Route::get('/logout', function () {

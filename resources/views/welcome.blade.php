@@ -58,7 +58,7 @@
                         <div class="card-block">
                             <h4 class="card-title">{{ $s->title }}</h4>
                             <p class="card-text">{{ $s->description }}</p>
-                            <a href="" class="fw-600 fs-12">Read More <i class="fa fa-chevron-right fs-9 pl-8"></i></a>
+                            <a href="{{ route('series', $s->slug) }}" class="fw-600 fs-12">Read More <i class="fa fa-chevron-right fs-9 pl-8"></i></a>
                         </div>
                     </div>
                 </div>
