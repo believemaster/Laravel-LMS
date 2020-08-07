@@ -24,17 +24,26 @@
 <section class="section">
     <div class="container">
 
+        @php
+            $nextLesson = $lesson->getNextLesson();
+            $prevLesson = $lesson->getPrevLesson();
+        @endphp
+
       <div class="row gap-y text-center">
 
         <div class="col-12">
-            <vue-player default_lesson="{{ $lesson }}"></vue-player>
+            <vue-player default_lesson="{{ $lesson }}"
+                @if($nextLesson)
+                    next_lesson_url="{{ route('series.watch', ['series' => $series->slug, 'lesson' => $nextLesson->id]) }}"
+                @endif
+                ></vue-player>
 
-            @if ($lesson->getPrevLesson())
-                <a href="{{ route('series.watch', ['series' => $series->slug, 'lesson' => $lesson->getPrevLesson()->id]) }}" class="btn btn-info btn-sm pull-left">Prev Lesson</a>
+            @if ($prevLesson)
+                <a href="{{ route('series.watch', ['series' => $series->slug, 'lesson' => $prevLesson->id]) }}" class="btn btn-info btn-sm pull-left">Prev Lesson</a>
             @endif
 
-            @if ($lesson->getNextLesson())
-                <a href="{{ route('series.watch', ['series' => $series->slug, 'lesson' => $lesson->getNextLesson()->id]) }}" class="btn btn-info btn-sm pull-right">Next Lesson</a>
+            @if ($nextLesson)
+                <a href="{{ route('series.watch', ['series' => $series->slug, 'lesson' => $nextLesson->id]) }}" class="btn btn-info btn-sm pull-right">Next Lesson</a>
             @endif
         </div>
 
