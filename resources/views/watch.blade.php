@@ -26,7 +26,9 @@
 
       <div class="row gap-y">
 
-        <div class="col-12"></div>
+        <div class="col-12">
+            <vue-player default_lesson="{{ $lesson }}"></vue-player>
+        </div>
 
       </div>
 

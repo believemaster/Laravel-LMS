@@ -37,7 +37,9 @@
                 <tr>
                     @forelse ($series as $s)
                         <tr>
-                            <td>{{ $s->title }}</td>
+                            <td>
+                                <a href="{{ url('/admin/series/'. $s->slug) }}">{{ $s->title }}</a>
+                            </td>
                             <td>
                                 <a href="{{ route('series.edit', $s->slug) }}" class="btn btn-primary">Edit</a>
                             </td>
