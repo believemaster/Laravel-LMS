@@ -27,6 +27,8 @@ Route::get('/watch-series/{series}', 'WatchSeriesController@index')->name('serie
 
 Route::get('/series/{series}/lesson/{lesson}', 'WatchSeriesController@showLesson')->name('series.watch');
 
+Route::post('/series/complete-lesson/{lesson}', 'WatchSeriesController@completeLesson');
+
 Route::get('/series/{series}', 'FrontendController@series')->name('series');
 
 Route::get('register/confirm', 'ConfirmEmailController@index')->name('confirm-email');
