@@ -23,6 +23,8 @@ Auth::routes();
 
 Route::get('/', 'FrontendController@welcome');
 
+Route::get('/profile/{user}', 'ProfileController@index');
+
 Route::get('/watch-series/{series}', 'WatchSeriesController@index')->name('series.learning');
 
 Route::get('/series/{series}/lesson/{lesson}', 'WatchSeriesController@showLesson')->name('series.watch');

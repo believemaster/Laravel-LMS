@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return in_array($this->email, config('appConfig.administrators'));
     }
+
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
 }

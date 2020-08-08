@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\Lesson;
+use App\Series;
 use Illuminate\Support\Facades\Redis;
 
 trait Learning
@@ -50,5 +51,38 @@ trait Learning
             $lesson->id,
             [$this->getCompletedLessonsForASeries($lesson->series)]
         );
+    }
+
+    public function seriesBeingWatchedIds()
+    {
+        $keys = Redis::keys("user:{$this->id}:series:*");
+        $seriesIds = [];
+
+        foreach ($keys as $key) :
+            $seriesId = explode(':', $key)[3];
+            array_push($seriesIds, $seriesId);
+        endforeach;
+
+        return $seriesIds;
+    }
+
+    public function seriesBeingWatched()
+    {
+
+        return collect($this->seriesBeingWatchedIds())->map(function ($id) {
+            return Series::find($id);
+        })->filter();
+    }
+
+    public function getTotalNumberOfCompletedLessons()
+    {
+        $keys = Redis::keys("user:{$this->id}:series:*");
+        $result = 0;
+
+        foreach ($keys as $key) :
+            $result = $result + count(Redis::smembers($key));
+        endforeach;
+
+        return $result;
     }
 }
