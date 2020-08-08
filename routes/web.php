@@ -22,23 +22,23 @@ Route::get('/redis', function () {
 Auth::routes();
 
 Route::get('/', 'FrontendController@welcome');
+Route::get('/home', 'FrontendController@welcome');
 
 Route::get('/profile/{user}', 'ProfileController@index');
 
-Route::get('/watch-series/{series}', 'WatchSeriesController@index')->name('series.learning');
 
-Route::get('/series/{series}/lesson/{lesson}', 'WatchSeriesController@showLesson')->name('series.watch');
 
-Route::post('/series/complete-lesson/{lesson}', 'WatchSeriesController@completeLesson');
 
 Route::get('/series/{series}', 'FrontendController@series')->name('series');
 
 Route::get('register/confirm', 'ConfirmEmailController@index')->name('confirm-email');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/watch-series/{series}', 'WatchSeriesController@index')->name('series.learning');
+    Route::get('/series/{series}/lesson/{lesson}', 'WatchSeriesController@showLesson')->name('series.watch');
+    Route::post('/series/complete-lesson/{lesson}', 'WatchSeriesController@completeLesson');
+});
+
 Route::get('/logout', function () {
     auth()->logout();
 });
-
-// Route::get('{series_by_id}', function (\App\Series $series) {
-//     dd($series);
-// });
