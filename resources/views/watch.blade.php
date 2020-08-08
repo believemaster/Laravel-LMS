@@ -56,10 +56,14 @@
                     @endif
                     "
                   >
-                  @if (auth()->user()->hasCompletedLesson($l))
-                    <b><small>COMPLETED</small></b>
-                  @endif
-                    <a href="{{ route('series.watch', ['series' => $series->slug, 'lesson' => $l->id]) }}">{{ $l->title }}</a>
+                    @if (auth()->user()->hasCompletedLesson($l))
+                        <b><small class="badge badge-success badge-sm mr-2">COMPLETED</small></b> &nbsp;
+                    @endif
+
+                    <a href="{{ route('series.watch', ['series' => $series->slug, 'lesson' => $l->id]) }}"
+                        class="@if ($l->id == $lesson->id) text-white @else text-dark @endif">
+                                <b>{{ $l->title }}<b>
+                    </a>
                   </li>
                 @endforeach
             </ul>

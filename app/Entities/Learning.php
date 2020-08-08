@@ -2,8 +2,8 @@
 
 namespace App\Entities;
 
-use App\Lesson;
 use App\Series;
+use App\Lesson;
 use Illuminate\Support\Facades\Redis;
 
 trait Learning
@@ -23,12 +23,12 @@ trait Learning
 
     public function getNumberOfCompletedLessonsForASeries($series)
     {
-        return count([$this->getCompletedLessonsForASeries($series)]);
+        return count($this->getCompletedLessonsForASeries($series));
     }
 
     public function getCompletedLessonsForASeries($series)
     {
-        Redis::smembers("user:{$this->id}:series:{$series->id}");
+        return Redis::smembers("user:{$this->id}:series:{$series->id}");
     }
 
     public function hasStartedSeries($series)
@@ -36,20 +36,19 @@ trait Learning
         return $this->getNumberOfCompletedLessonsForASeries($series) > 0;
     }
 
-    public function getCompletedSeries($series)
+    public function getCompletedLessons($series)
     {
-        $completedLessons = $this->getCompletedLessonsForASeries($series);
-
-        return collect($completedLessons)->map(function ($lessonId) {
-            return Lesson::find($lessonId);
-        });
+        return Lesson::whereIn(
+            'id',
+            $this->getCompletedLessonsForASeries($series)
+        )->get();
     }
 
     public function hasCompletedLesson($lesson)
     {
         return in_array(
             $lesson->id,
-            [$this->getCompletedLessonsForASeries($lesson->series)]
+            $this->getCompletedLessonsForASeries($lesson->series)
         );
     }
 
@@ -57,10 +56,9 @@ trait Learning
     {
         $keys = Redis::keys("user:{$this->id}:series:*");
         $seriesIds = [];
-
         foreach ($keys as $key) :
-            $seriesId = explode(':', $key)[3];
-            array_push($seriesIds, $seriesId);
+            $seriedId = explode(':', $key)[3];
+            array_push($seriesIds, $seriedId);
         endforeach;
 
         return $seriesIds;
@@ -68,7 +66,6 @@ trait Learning
 
     public function seriesBeingWatched()
     {
-
         return collect($this->seriesBeingWatchedIds())->map(function ($id) {
             return Series::find($id);
         })->filter();
@@ -78,11 +75,19 @@ trait Learning
     {
         $keys = Redis::keys("user:{$this->id}:series:*");
         $result = 0;
-
         foreach ($keys as $key) :
             $result = $result + count(Redis::smembers($key));
         endforeach;
 
         return $result;
+    }
+
+    public function getNextLessonToWatch($series)
+    {
+        $lessonIds = $this->getCompletedLessonsForASeries($series);
+        $lessonId = end($lessonIds);
+        return Lesson::find(
+            $lessonId
+        )->getNextLesson();
     }
 }
