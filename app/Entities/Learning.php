@@ -48,7 +48,7 @@ trait Learning
     {
         return in_array(
             $lesson->id,
-            $this->getCompletedLessonsForASeries($lesson->series)
+            [$this->getCompletedLessonsForASeries($lesson->series)]
         );
     }
 }

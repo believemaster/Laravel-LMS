@@ -4333,20 +4333,18 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _vimeo_player__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @vimeo/player */ "./node_modules/@vimeo/player/dist/player.es.js");
-/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
-/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _vimeo_player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @vimeo/player */ "./node_modules/@vimeo/player/dist/player.es.js");
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_2__);
 //
 //
 //
 //
 //
 //
-//
-//
-//
-//
-//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4361,7 +4359,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       if (this.next_lesson_url) {
-        sweetalert__WEBPACK_IMPORTED_MODULE_1___default()({
+        sweetalert__WEBPACK_IMPORTED_MODULE_2___default()({
           title: "Wow! You Completed This Lesson",
           button: "Next Lesson",
           icon: "success"
@@ -4369,25 +4367,30 @@ __webpack_require__.r(__webpack_exports__);
           window.location = _this.next_lesson_url;
         });
       } else {
-        sweetalert__WEBPACK_IMPORTED_MODULE_1___default()({
+        sweetalert__WEBPACK_IMPORTED_MODULE_2___default()({
           title: "Congrats! You Completed The Series",
           button: "Finish",
           icon: "success"
-        }).then(function () {
-          window.location = "/";
         });
       }
+    },
+    completeLesson: function completeLesson() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("/series/complete-lesson/".concat(this.lesson.id), {}).then(function (resp) {
+        _this2.displayVideoEndedAlert();
+      });
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this3 = this;
 
-    var player = new _vimeo_player__WEBPACK_IMPORTED_MODULE_0__["default"]("handstick"); // player.on("play", () => {
+    var player = new _vimeo_player__WEBPACK_IMPORTED_MODULE_1__["default"]("handstick"); // player.on("play", () => {
     //   console.log("Playing video");
     // });
 
     player.on("ended", function () {
-      _this2.displayVideoEndedAlert();
+      _this3.completeLesson();
     });
   }
 });
