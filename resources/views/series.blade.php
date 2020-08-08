@@ -76,6 +76,27 @@
               <hr>
               <p class="lead">Sneak Peek of the lessons already available in this course</p>
           </header>
+          <div class="col-12">
+            <ul class="list-group">
+                @foreach ($series->getOrderedLessons() as $l)
+                  <li class="list-group-item
+                    @if ($l->id == $lesson->id)
+                        active
+                    @endif
+                    "
+                  >
+                    @if (auth()->user()->hasCompletedLesson($l))
+                        <b><small class="badge badge-success badge-sm mr-2">COMPLETED</small></b> &nbsp;
+                    @endif
+
+                    <a href="{{ route('series.watch', ['series' => $series->slug, 'lesson' => $l->id]) }}"
+                        class="@if ($l->id == $lesson->id) text-white @else text-dark @endif">
+                                <b>{{ $l->title }}<b>
+                    </a>
+                  </li>
+                @endforeach
+            </ul>
+        </div>
       </div>
   </section>
 @endsection
